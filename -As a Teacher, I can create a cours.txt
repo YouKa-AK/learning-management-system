@@ -1,0 +1,12 @@
+-As a Teacher, I can create a course
+-As a Student, I can view available courses
+-As a Teacher, I can upload learning material
+-As a User, I can view course details
+-As a Teacher, I want to enroll multiple students at once into a course so that I can quickly add an entire class without            enrolling students one by one.
+
+
+
+
+
+--BASH COMMAND--
+To install the same libraries installed in the system:	pip install -r requirements.txt

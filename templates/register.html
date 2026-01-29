@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Teacher Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+    /* ================= FONT ================= */
+    @font-face {
+        font-family: 'Special Gothic Expanded One';
+        src: url('fonts/SpecialGothicExpandedOne-Regular.ttf') format('truetype');
+    }
+    
+    /* ================= RESET ================= */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* ================= PAGE BACKGROUND ================= */
+    body {
+        min-height: 100vh;
+        background:
+            linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+            url("college.jpg") center/cover no-repeat;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: white;
+    }
+    
+    /* ================= BRANDING ================= */
+    .branding {
+        margin-top: 4rem;
+        text-align: center;
+    }
+    
+    .branding img {
+        width: 90px;
+        margin-bottom: 1rem;
+    }
+    
+    .branding h1 {
+        font-family: 'Special Gothic Expanded One', sans-serif;
+        font-size: 2.4rem;
+        letter-spacing: 1.5px;
+    }
+    
+    .branding p {
+        margin-top: 0.5rem;
+        font-size: 1.05rem;
+        opacity: 0.9;
+    }
+    
+    /* ================= LOGIN CARD ================= */
+    .login-card {
+        margin-top: 3rem;
+        background: white;
+        color: #000;
+        width: 100%;
+        max-width: 400px;
+        padding: 2.5rem;
+        border-radius: 18px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    }
+    
+    .login-card h3 {
+        text-align: center;
+        color: #0f766e;
+        margin-bottom: 1.5rem;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    /* Inputs */
+    .login-card input,
+    .login-card select {
+        width: 100%;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+    }
+    
+    .login-card input:focus,
+    .login-card select:focus {
+        outline: none;
+        border-color: #0ea5a4;
+    }
+    
+    /* Button */
+    .login-card button {
+        width: 100%;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #0f766e, #0ea5a4);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    
+    .login-card button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(14,165,164,0.4);
+    }
+    
+    /* Register text */
+    .register-text {
+        margin-top: 1.2rem;
+        text-align: center;
+        font-size: 0.95rem;
+    }
+    
+    .register-text a {
+        color: #0ea5a4;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    
+    .register-text a:hover {
+        text-decoration: underline;
+    }
+    
+    /* ================= MOBILE ================= */
+    @media (max-width: 600px) {
+        .branding h1 {
+            font-size: 1.8rem;
+        }
+    
+        .login-card {
+            margin: 2rem 1rem;
+        }
+    }
+    
+</style>
+</head>
+
+<script>
+    function validateTeacherForm() {
+    
+        let name = document.getElementById("name").value.trim();
+        let email = document.getElementById("email").value.trim();
+        let empCode = document.getElementById("empCode").value.trim();
+        let password = document.getElementById("password").value;
+        let confirmPassword = document.getElementById("confirmPassword").value;
+    
+        // Name validation
+        let namePattern = /^[A-Za-z\s]+$/;
+        if (name === "" || !namePattern.test(name)) {
+            alert("Please enter a valid full name (letters only).");
+            return false;
+        }
+    
+        // Email validation (college domain only)
+        let emailPattern = /^[a-zA-Z0-9._%+-]+@kristujayanti\.com$/;
+        if (!emailPattern.test(email)) {
+            alert("Please use your official email ID (ending with @kristujayanti.com).");
+            return false;
+        }
+
+    
+        // Employee Code validation
+        if (empCode === "") {
+            alert("Employee code cannot be empty.");
+            return false;
+        }
+    
+        // Password validation
+        if (password.length < 6) {
+            alert("Password must be at least 6 characters long.");
+            return false;
+        }
+    
+        // Confirm password validation
+        if (password !== confirmPassword) {
+            alert("Passwords do not match.");
+            return false;
+        }
+    
+        // If everything is valid
+        alert("Registration successful!");
+        return true;
+    }
+    </script>
+    
+
+<body>
+
+<div class="branding">
+    <img src="logo.jpg" alt="College Logo">
+    <h1>KRISTU JAYANTI UNIVERSITY</h1>
+    <p>Learning Management System</p>
+</div>
+
+<div class="login-card">
+    <h3>Teacher Registration</h3>
+
+    <form onsubmit="return validateTeacherForm()">
+        <input type="text" id="name" placeholder="Full Name" required>
+
+        <input type="email" id="email" placeholder="Email ID" required>
+
+        <input type="text" id="empCode" placeholder="Employee Code" required>
+
+        <input type="password" id="password" placeholder="Password" required>
+
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+
+
+        <button type="submit">Register</button>
+    </form>
+
+    <div class="register-text">
+        Already have an account?
+        <a href="login.html">Login</a>
+    </div>
+</div>
+
+</body>
+</html>
