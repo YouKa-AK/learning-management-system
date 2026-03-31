@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit Assignment</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            background:
+                linear-gradient(rgba(15,118,110,0.85), rgba(14,165,164,0.85)),
+                url("{{ url_for('static', filename='images/college.jpg') }}")
+                center/cover no-repeat;
+            color: white;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            color: black;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin: 6px 0;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .submitted {
+            background: #e0f2fe;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background: #0f766e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #0ea5a4;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #0f766e;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>{{ assignment.title }}</h2>
+
+    <p><strong>Course:</strong> {{ assignment.course_name }}</p>
+    <p><strong>Due Date:</strong> {{ assignment.due_date }}</p>
+    <p><strong>Description:</strong> {{ assignment.description }}</p>
+    <p><strong>Max Marks:</strong> {{ assignment.max_marks }}</p>
+
+    <!-- ✅ MESSAGE -->
+    {% if message %}
+        <div class="message {{ 'success' if status == 'success' else 'error' }}">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    <!-- ✅ EXISTING SUBMISSION -->
+    {% if existing %}
+        <div class="submitted">
+            ✅ Submitted at: {{ existing.submitted_at }} <br>
+            🔁 You can re-upload if needed
+        </div>
+    {% endif %}
+
+    <!-- ✅ FORM -->
+    <form method="POST" enctype="multipart/form-data">
+        <label>Upload File</label>
+        <input type="file" name="file" required>
+
+        <button type="submit" class="btn">
+            {% if existing %}Re-submit Assignment{% else %}Submit Assignment{% endif %}
+        </button>
+    </form>
+
+    <a href="/my_courses" class="back">← Back to Courses</a>
+
+</div>
+
+</body>
+</html>

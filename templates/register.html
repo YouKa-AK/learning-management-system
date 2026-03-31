@@ -193,23 +193,24 @@
 
 <div class="branding">
     <img src="logo.jpg" alt="College Logo">
-    <h1>KRISTU JAYANTI UNIVERSITYY</h1>
+    <h1>KRISTU JAYANTI UNIVERSITY</h1>
     <p>Learning Management System</p>
 </div>
 
 <div class="login-card">
     <h3>Teacher Registration</h3>
 
-    <form onsubmit="return validateTeacherForm()">
-        <input type="text" id="name" placeholder="Full Name" required>
+    <form method="POST" action="{{ url_for('register') }}" onsubmit="return validateTeacherForm()">
+        <input type="text" id="name" name="name" placeholder="Full Name" required>
 
-        <input type="email" id="email" placeholder="Email ID" required>
+        <input type="email" id="email" name="email" placeholder="Email ID" required>
 
-        <input type="text" id="empCode" placeholder="Employee Code" required>
+        <input type="text" id="empCode" name="empCode" placeholder="Employee Code" required>
 
-        <input type="password" id="password" placeholder="Password" required>
+        <input type="password" id="password" name="password" placeholder="Password" required>
 
-        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+
 
 
         <button type="submit">Register</button>
@@ -217,7 +218,7 @@
 
     <div class="register-text">
         Already have an account?
-        <a href="login.html">Login</a>
+        <a href="{{ url_for('login') }}">Login Here</a>
     </div>
 </div>
 

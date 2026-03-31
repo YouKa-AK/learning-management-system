@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Announcement</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            background:
+                linear-gradient(rgba(15,118,110,0.85), rgba(14,165,164,0.85)),
+                url("{{ url_for('static', filename='images/college.jpg') }}")
+                center/cover no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            width: 450px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            text-align: center;
+            color: #0f766e;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+        }
+
+        .submit-btn {
+            background: linear-gradient(to right, #0f766e, #1fa39a);
+        }
+
+        .cancel-btn {
+            background: #dc2626;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .course-name {
+            text-align: center;
+            font-size: 14px;
+            color: gray;
+            margin-bottom: 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Create Announcement</h2>
+    <div class="course-name">{{ course.course_name }}</div>
+
+    <form method="POST">
+
+        <label>Title</label>
+        <input type="text" name="title" required>
+
+        <label>Content</label>
+        <textarea name="content" rows="6" required></textarea>
+
+        <div class="btn-group">
+            <button type="submit" class="btn submit-btn">
+                Post
+            </button>
+
+            <a href="/view_announcements/{{ course_id }}" class="btn cancel-btn">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

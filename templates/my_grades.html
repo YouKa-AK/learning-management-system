@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Grades</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        min-height: 100vh;
+        background:
+            linear-gradient(rgba(15,118,110,0.85), rgba(14,165,164,0.85)),
+            url("{{ url_for('static', filename='images/college.jpg') }}")
+            center/cover no-repeat;
+        color: white;
+        padding: 2rem;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: auto;
+        background: white;
+        color: black;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: #0f766e;
+        color: white;
+        padding: 12px;
+    }
+
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+    }
+
+    tr:hover {
+        background: #f1f5f9;
+    }
+
+    .graded {
+        color: #16a34a;
+        font-weight: bold;
+    }
+
+    .pending {
+        color: #dc2626;
+        font-style: italic;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 2rem;
+        color: gray;
+    }
+
+    .back-btn {
+        display: block;
+        margin: 20px auto 0;
+        padding: 10px 18px;
+        background: #0f766e;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        text-align: center;
+        width: fit-content;
+        font-weight: 500;
+    }
+
+    .back-btn:hover {
+        background: #0ea5a4;
+    }
+
+</style>
+</head>
+
+<body>
+
+<h2>My Grades</h2>
+
+<div class="container">
+
+{% if grades %}
+<table>
+    <tr>
+        <th>Course</th>
+        <th>Assignment</th>
+        <th>Due Date</th>
+        <th>Submitted</th>
+        <th>Marks</th>
+        <th>Max</th>
+        <th>Feedback</th>
+    </tr>
+
+    {% for g in grades %}
+    <tr>
+        <td>{{ g.course_name }}</td>
+        <td>{{ g.title }}</td>
+        <td>{{ g.due_date }}</td>
+        <td>{{ g.submitted_at }}</td>
+
+        <td>
+            {% if g.marks is not none %}
+                <span class="graded">{{ g.marks }}</span>
+            {% else %}
+                <span class="pending">Not graded</span>
+            {% endif %}
+        </td>
+
+        <td>{{ g.max_marks }}</td>
+
+        <td>{{ g.feedback or '—' }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% else %}
+<div class="no-data">
+    You have not submitted any assignments yet.
+</div>
+{% endif %}
+
+<a href="/student_dashboard" class="back-btn">
+    ← Back to Dashboard
+</a>
+
+</div>
+
+</body>
+</html>

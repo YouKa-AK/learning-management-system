@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Courses</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        min-height: 100vh;
+        background:
+            linear-gradient(rgba(15,118,110,0.85), rgba(14,165,164,0.85)),
+            url("{{ url_for('static', filename='images/college.jpg') }}")
+            center/cover no-repeat;
+        color: white;
+        padding: 2rem;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .container {
+        max-width: 950px;
+        margin: auto;
+        background: white;
+        color: black;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: #0f766e;
+        color: white;
+        padding: 12px;
+    }
+
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+    }
+
+    tr:hover {
+        background: #f1f5f9;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        color: white;
+        font-size: 13px;
+        display: inline-block;
+    }
+
+    .course-btn {
+        background: #0f766e;
+    }
+
+    .announce-btn {
+        background: #f59e0b;
+    }
+
+    .discuss-btn {
+        background: #10b981;
+    }
+
+    .btn:hover {
+        opacity: 0.85;
+    }
+
+    .no-courses {
+        text-align: center;
+        padding: 2rem;
+        color: gray;
+    }
+
+    .bottom-links {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .link-btn {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px 15px;
+        background: #0f766e;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+    }
+
+    .link-btn:hover {
+        background: #0ea5a4;
+    }
+
+</style>
+</head>
+
+<body>
+
+<h2>My Enrolled Courses</h2>
+
+<div class="container">
+
+{% if courses %}
+<table>
+    <tr>
+        <th>Course</th>
+        <th>Code</th>
+        <th>Teacher</th>
+        <th>Open</th>
+        <th>Announcements</th>
+        <th>Discussions</th>
+    </tr>
+
+    {% for c in courses %}
+    <tr>
+        <td>{{ c.course_name }}</td>
+        <td>{{ c.course_code }}</td>
+        <td>{{ c.teacher_email }}</td>
+
+        <!-- ✅ FIXED HERE -->
+        <td>
+            <a href="/course/{{ c.id }}">
+                Open Course
+            </a>
+        </td>
+
+        <td>
+            <a href="/view_announcements/{{ c.id }}" class="btn announce-btn">
+                View
+            </a>
+        </td>
+
+        <td>
+            <a href="/discussions/{{ c.id }}" class="btn discuss-btn">
+                Join
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% else %}
+<div class="no-courses">
+    You are not enrolled in any courses yet.
+</div>
+{% endif %}
+
+<div class="bottom-links">
+    <a href="/my_grades" class="link-btn">📊 View My Grades</a>
+    <a href="/student_dashboard" class="link-btn">← Back to Dashboard</a>
+</div>
+
+</div>
+
+</body>
+</html>

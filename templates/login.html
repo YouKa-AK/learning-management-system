@@ -10,7 +10,7 @@
 /* ================= FONT ================= */
 @font-face {
     font-family: 'Special Gothic Expanded One';
-    src: url('fonts/SpecialGothicExpandedOne-Regular.ttf') format('truetype');
+    src: url("{{ url_for('static', filename='fonts/SpecialGothicExpandedOne-Regular.ttf') }}") format('truetype');
 }
 
 /* ================= RESET ================= */
@@ -26,7 +26,8 @@ body {
     min-height: 100vh;
     background:
         linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
-        url("college.jpg") center/cover no-repeat;
+        url("{{ url_for('static', filename='images/college.jpg') }}") 
+        center/cover no-repeat;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -126,16 +127,28 @@ body {
     text-decoration: underline;
 }
 
-/* ================= MOBILE ================= */
-@media (max-width: 600px) {
-    .branding h1 {
-        font-size: 1.8rem;
-    }
-
-    .login-card {
-        margin: 2rem 1rem;
-    }
+.success {
+    color: green;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 1rem;
 }
+
+.error {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.register-text a {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 6px 12px;
+    background: #e6f7f6;
+    border-radius: 6px;
+}
+
 
 </style>
 </head>
@@ -143,7 +156,7 @@ body {
 <body>
 
 <div class="branding">
-    <img src="logo.jpg" alt="College Logo">
+    <img src="{{ url_for('static', filename='images/logo.jpg') }}">    
     <h1>KRISTU JAYANTI UNIVERSITY</h1>
     <p>Learning Management System</p>
 </div>
@@ -151,22 +164,29 @@ body {
 <div class="login-card">
     <h3>LMS Login</h3>
 
-    <form>
-        <input type="email" placeholder="Email" required>
-        <input type="password" placeholder="Password" required>
+    <form method="POST">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
 
-        <select required>
+        <!-- <select name="role" required>
             <option disabled selected>Select Role</option>
-            <option>Student</option>
-            <option>Teacher</option>
-        </select>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+        </select> -->
 
         <button type="submit">Login</button>
     </form>
 
+    {% if message %}
+        <p class="{{ status }}">{{ message }}</p>
+    {% endif %}
+
     <div class="register-text">
         Don’t have an account?
-        <a href="register.html">Register</a>
+        <br><br>
+        <a href="{{ url_for('register') }}">Register as Teacher</a>
+        <br>
+        <a href="{{ url_for('student_register') }}">Register as Student</a>
     </div>
 </div>
 

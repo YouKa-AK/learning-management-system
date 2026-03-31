@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Announcements — {{ course.course_name }}</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        min-height: 100vh;
+        background:
+            linear-gradient(rgba(15,118,110,0.85), rgba(14,165,164,0.85)),
+            url("{{ url_for('static', filename='images/college.jpg') }}")
+            center/cover no-repeat;
+        padding: 20px;
+        color: white;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    .new-btn {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        background: linear-gradient(to right, #0f766e, #1fa39a);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+    }
+
+    .new-btn:hover {
+        opacity: 0.9;
+    }
+
+    .card {
+        background: white;
+        color: black;
+        padding: 18px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #0f766e;
+        margin-bottom: 8px;
+    }
+
+    .content {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .meta {
+        font-size: 12px;
+        color: gray;
+    }
+
+    .delete {
+        display: inline-block;
+        margin-top: 8px;
+        color: #dc2626;
+        font-size: 13px;
+        text-decoration: none;
+    }
+
+    .delete:hover {
+        text-decoration: underline;
+    }
+
+    .empty {
+        background: white;
+        color: gray;
+        text-align: center;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+
+</style>
+</head>
+
+<body>
+
+<h2>Announcements — {{ course.course_name }}</h2>
+
+<div class="container">
+
+    {% if role == 'teacher' %}
+    <a href="/create_announcement/{{ course.id }}" class="new-btn">
+        + New Announcement
+    </a>
+    {% endif %}
+
+    {% if announcements %}
+        {% for a in announcements %}
+        <div class="card">
+
+            <div class="title">{{ a.title }}</div>
+
+            <div class="content">
+                {{ a.content }}
+            </div>
+
+            <div class="meta">
+                Posted by {{ a.teacher_email }} on {{ a.created_at }}
+            </div>
+
+            {% if role == 'teacher' %}
+            <a href="/delete_announcement/{{ a.id }}/{{ course.id }}"
+               onclick="return confirm('Delete this announcement?')"
+               class="delete">
+               Delete
+            </a>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+
+    {% else %}
+        <div class="empty">
+            No announcements yet.
+        </div>
+    {% endif %}
+
+    <a href="/{% if role == 'teacher' %}view_my_courses{% else %}my_courses{% endif %}" 
+       class="back-link">
+        ← Back to Courses
+    </a>
+
+</div>
+
+</body>
+</html>

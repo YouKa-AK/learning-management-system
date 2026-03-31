@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Create Course</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+/* ===== Reset ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ===== Background ===== */
+body {
+    min-height: 100vh;
+    background:
+        linear-gradient(rgba(15,118,110,0.85), rgba(14,165,164,0.85)),
+        url("{{ url_for('static', filename='images/college.jpg') }}")
+        center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+/* ===== Header ===== */
+.header {
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+}
+
+.header p {
+    margin-top: 0.5rem;
+    opacity: 0.9;
+}
+
+/* ===== Form Card ===== */
+.form-card {
+    margin-top: 2.5rem;
+    background: white;
+    color: #000;
+    width: 100%;
+    max-width: 500px;
+    padding: 2.5rem;
+    border-radius: 18px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+}
+
+/* Title */
+.form-card h2 {
+    text-align: center;
+    color: #0f766e;
+    margin-bottom: 1.5rem;
+}
+
+/* Inputs */
+.form-card input,
+.form-card textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+}
+
+.form-card textarea {
+    resize: none;
+    height: 100px;
+}
+
+.form-card input:focus,
+.form-card textarea:focus {
+    outline: none;
+    border-color: #0ea5a4;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.btn-primary {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0f766e, #0ea5a4);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(14,165,164,0.4);
+}
+
+.btn-secondary {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 10px;
+    background: #ccc;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background: #bbb;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .form-card {
+        margin: 2rem 1rem;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>KRISTU JAYANTI UNIVERSITY</h1>
+    <p>Learning Management System</p>
+</div>
+
+<div class="form-card">
+    <h2>Create New Course</h2>
+
+    <form method="POST">
+        <input type="text" name="course_name" placeholder="Course Title" required>
+        <input type="text" name="course_code" placeholder="Course Code" required>
+        <textarea name="description" placeholder="Course Description" required></textarea>
+        <input type="number" name="credits" placeholder="Credits" min="1" required>
+
+        <div class="button-group">
+            <button type="submit" class="btn-primary">Create Course</button>
+            <button type="button" class="btn-secondary" onclick="window.history.back()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Submissions — {{ assignment.title }}</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        min-height: 100vh;
+        background:
+            linear-gradient(rgba(15,118,110,0.85), rgba(14,165,164,0.85)),
+            url("{{ url_for('static', filename='images/college.jpg') }}")
+            center/cover no-repeat;
+        color: white;
+        padding: 2rem;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .sub-info {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        background: white;
+        color: black;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: #0f766e;
+        color: white;
+        padding: 12px;
+        text-align: center;
+    }
+
+    td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    tr:hover {
+        background: #f1f5f9;
+    }
+
+    .download-link {
+        color: #1d4ed8;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .download-link:hover {
+        text-decoration: underline;
+    }
+
+    .graded {
+        color: #16a34a;
+        font-weight: bold;
+    }
+
+    .pending {
+        color: #dc2626;
+        font-style: italic;
+    }
+
+    /* Form styling */
+    .grade-form {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .grade-form input {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 12px;
+    }
+
+    .marks-input {
+        width: 60px;
+    }
+
+    .feedback-input {
+        width: 140px;
+    }
+
+    .btn {
+        padding: 5px 10px;
+        background: #9333ea;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .btn:hover {
+        opacity: 0.85;
+    }
+
+    .empty {
+        text-align: center;
+        padding: 2rem;
+        color: gray;
+    }
+
+    .back-btn {
+        display: block;
+        margin: 20px auto 0;
+        padding: 10px 18px;
+        background: #0f766e;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        text-align: center;
+        width: fit-content;
+        font-weight: 500;
+    }
+
+    .back-btn:hover {
+        background: #0ea5a4;
+    }
+
+</style>
+</head>
+
+<body>
+
+<h2>Submissions — {{ assignment.title }}</h2>
+<div class="sub-info">
+    Max Marks: <strong>{{ assignment.max_marks }}</strong>
+</div>
+
+<div class="container">
+
+{% if submissions %}
+<table>
+    <tr>
+        <th>Student</th>
+        <th>Submitted</th>
+        <th>File</th>
+        <th>Marks</th>
+        <th>Feedback</th>
+        <th>Grade</th>
+    </tr>
+
+    {% for sub in submissions %}
+    <tr>
+        <td>{{ sub.student_email }}</td>
+        <td>{{ sub.submitted_at }}</td>
+
+        <td>
+            {% if sub.file_path %}
+                <a href="/{{ sub.file_path }}" target="_blank" class="download-link">
+                    Download
+                </a>
+            {% else %}
+                No file
+            {% endif %}
+        </td>
+
+        <td>
+            {% if sub.marks is not none %}
+                <span class="graded">{{ sub.marks }}</span>
+            {% else %}
+                <span class="pending">—</span>
+            {% endif %}
+        </td>
+
+        <td>{{ sub.feedback or '—' }}</td>
+
+        <td>
+            <form method="POST" action="{{ url_for('grade_submission_inline') }}" class="grade-form">
+
+                <input type="number"
+                    name="marks"
+                    value="{{ sub.marks or '' }}"
+                    min="0"
+                    max="{{ assignment.max_marks }}"
+                    placeholder="Marks"
+                    class="marks-input"
+                    required>
+
+                <input type="text"
+                    name="feedback"
+                    value="{{ sub.feedback or '' }}"
+                    placeholder="Feedback"
+                    class="feedback-input"
+                    required>
+
+                <!-- VERY IMPORTANT -->
+                <input type="hidden" name="submission_id" value="{{ sub.id }}">
+
+                <button type="submit" class="btn">
+                    {% if sub.marks is not none %}Update{% else %}Grade{% endif %}
+                </button>
+
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% else %}
+<div class="empty">
+    No submissions yet.
+</div>
+{% endif %}
+
+<a href="/view_assignments/{{ assignment.course_id }}" class="back-btn">
+    ← Back to Assignments
+</a>
+
+</div>
+
+</body>
+</html>

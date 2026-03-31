@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Materials</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(to right, #0f766e, #0ea5a4);
+            color: white;
+            padding: 2rem;
+        }
+
+        .container {
+            background: white;
+            color: black;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #0f766e;
+            color: white;
+            padding: 10px;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        tr:hover {
+            background: #f1f5f9;
+        }
+
+        input {
+            padding: 5px;
+            font-size: 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .edit-btn {
+            background: #2563eb;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+        }
+
+        .download-link {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .top-btn {
+            display: block;
+            margin-bottom: 15px;
+            padding: 8px 12px;
+            background: #9333ea;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            width: fit-content;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Course Materials</h2>
+
+<a href="/upload_material/{{ course_id }}" class="top-btn">
+    + Upload New Material
+</a>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Content / File</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+
+    {% for m in materials %}
+    <tr>
+
+        <form method="POST" action="{{ url_for('edit_material', material_id=m.id) }}">
+
+        <td>
+            <input type="text" name="title" value="{{ m.title }}">
+        </td>
+
+        <td>{{ m.type }}</td>
+
+        <td>
+            {% if m.type == 'file' %}
+                <a href="{{ url_for('static', filename='uploads/' + m.file_path) }}" class="download-link">
+                    Download
+                </a>
+            {% elif m.type == 'link' %}
+                <a href="{{ m.content }}" target="_blank">Open Link</a>
+            {% else %}
+                <input type="text" name="content" value="{{ m.content }}">
+            {% endif %}
+        </td>
+
+        <td>
+            <button type="submit" class="btn edit-btn">Save</button>
+        </td>
+
+        </form>
+
+        <td>
+            <a href="{{ url_for('delete_material', material_id=m.id) }}">
+                <button class="btn delete-btn">Delete</button>
+            </a>
+        </td>
+
+    </tr>
+    {% endfor %}
+
+</table>
+
+</div>
+
+</body>
+</html>

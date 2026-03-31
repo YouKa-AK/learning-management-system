@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Material</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(to right, #1d976c, #93f9b9);
+            margin: 0;
+        }
+
+        .container {
+            width: 40%;
+            margin: 80px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #1d976c;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #1d976c;
+            color: white;
+            border: none;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #159957;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Upload Study Material</h2>
+
+    <!-- DEBUG TEXT -->
+    <p style="text-align:center;">Course ID: {{ course_id }}</p>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <label>Title</label>
+        <input type="text" name="title" required>
+
+        <label>Material Type</label>
+        <select name="type" id="typeSelect" onchange="showFields()" required>
+            <option value="">Select Type</option>
+            <option value="file">File</option>
+            <option value="link">YouTube Link</option>
+            <option value="text">Notes</option>
+        </select>
+
+        <div id="fileField" style="display:none;">
+            <label>Upload File</label>
+            <input type="file" name="file">
+        </div>
+
+        <div id="linkField" style="display:none;">
+            <label>Paste Link</label>
+            <input type="text" name="link" placeholder="https://youtube.com/...">
+        </div>
+
+        <div id="textField" style="display:none;">
+            <label>Enter Notes</label>
+            <textarea name="text"></textarea>
+        </div>
+
+        <button type="submit">Upload</button>
+
+    </form>
+
+</div>
+
+<script>
+function showFields() {
+    let type = document.getElementById("typeSelect").value;
+
+    document.getElementById("fileField").style.display = "none";
+    document.getElementById("linkField").style.display = "none";
+    document.getElementById("textField").style.display = "none";
+
+    if (type === "file") {
+        document.getElementById("fileField").style.display = "block";
+    }
+    else if (type === "link") {
+        document.getElementById("linkField").style.display = "block";
+    }
+    else if (type === "text") {
+        document.getElementById("textField").style.display = "block";
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,36 +1,25 @@
+import os
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import event
-from sqlalchemy.engine import Engine
-import sqlite3
-
-db = SQLAlchemy()
+from app.extensions import db
 
 def create_app():
-    app = Flask(__name__)
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+    app = Flask(
+        __name__,
+        static_folder=os.path.join(BASE_DIR, 'static'),
+        template_folder=os.path.join(BASE_DIR, 'templates')
+    )
+
     app.config.from_object("config.Config")
 
     db.init_app(app)
-
-    # Enable SQLite foreign keys
-    @event.listens_for(Engine, "connect")
-    def set_sqlite_pragma(dbapi_connection, connection_record):
-        if isinstance(dbapi_connection, sqlite3.Connection):
-            cursor = dbapi_connection.cursor()
-            cursor.execute("PRAGMA foreign_keys=ON;")
-            cursor.close()
-
-    #  IMPORT MODELS HERE (CRITICAL)
-    from app.models.user import User
-    from app.models.course import Course
-    from app.models.enrollment import Enrollment
 
     # Register blueprints
     from app.routes.course_routes import course_bp
     app.register_blueprint(course_bp)
 
-    # Create tables
-    with app.app_context():
-        db.create_all()
+    from app.routes.auth import auth_bp
+    app.register_blueprint(auth_bp)
 
     return app

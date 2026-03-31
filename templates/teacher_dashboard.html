@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Teacher Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+/* ====== GLOBAL ====== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f766e, #0ea5a4);
+    min-height: 100vh;
+    color: white;
+}
+
+/* ====== NAVBAR ====== */
+.navbar {
+    background: rgba(0, 0, 0, 0.25);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar h2 {
+    font-weight: 600;
+}
+
+.logout-btn {
+    background: white;
+    color: #0f766e;
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background: #e6e6e6;
+}
+
+/* ====== MAIN CONTENT ====== */
+.container {
+    padding: 3rem;
+}
+
+.welcome {
+    margin-bottom: 2rem;
+}
+
+.welcome h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* ====== CARD GRID ====== */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+}
+
+/* ====== CARD STYLE ====== */
+.card {
+    background: white;
+    color: #000;
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    margin-bottom: 1rem;
+    color: #0f766e;
+}
+
+.card p {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    color: #555;
+}
+
+.card a {
+    display: inline-block;
+    padding: 0.6rem 1.4rem;
+    background: linear-gradient(135deg, #0f766e, #0ea5a4);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.card a:hover {
+    opacity: 0.9;
+}
+
+/* ====== FOOTER ====== */
+.footer {
+    text-align: center;
+    margin-top: 4rem;
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<div class="navbar">
+    <h2>LMS Teacher Panel</h2>
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div class="container">
+
+    <div class="welcome">
+        <h1>Welcome, {{ teacher_name }} 👋</h1>
+        <p>Manage your courses and students efficiently.</p>
+    </div>
+
+    <div class="card-grid">
+
+        <div class="card">
+            <h3>Create Course</h3>
+            <p>Add a new course and manage its content.</p>
+            <a href="/create_course">Create</a>
+        </div>
+
+        <div class="card">
+            <h3>View My Courses</h3>
+            <p>Check and manage courses created by you.</p>
+            <a href="/view_my_courses">View</a>
+        </div>
+
+        <div class="card">
+            <h3>Manage Assignments</h3>
+            <p>Create and view assignments for your courses.</p>
+            <a href="/view_my_courses">Open</a>
+        </div>
+
+        <div class="card">
+            <h3>Announcements</h3>
+            <p>Create and manage course announcements.</p>
+            <a href="/view_my_courses">Open</a>
+        </div>
+
+        {% for c in courses %}
+            <div>
+                <h3>{{ c.course_name }}</h3>
+
+                <a href="/upload_material/{{ c.id }}" class="btn">
+                    Upload Materials
+                </a>
+            </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="footer">
+        © 2026 Learning Management System | Teacher Dashboard
+    </div>
+
+</div>
+
+</body>
+</html>

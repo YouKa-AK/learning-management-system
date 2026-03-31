@@ -1,0 +1,4 @@
+for saving the git hub repo use :
+	add
+	commit
+	push

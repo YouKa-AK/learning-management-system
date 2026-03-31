@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Details</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(to right, #1d976c, #93f9b9);
+            margin: 0;
+        }
+
+        .header {
+            background: #1d976c;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .container {
+            width: 80%;
+            margin: 30px auto;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: white;
+            border: none;
+            cursor: pointer;
+            margin-right: 5px;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .tab-btn.active {
+            background: #1d976c;
+            color: white;
+        }
+
+        .content-box {
+            background: white;
+            padding: 20px;
+            border-radius: 0 6px 6px 6px;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 12px;
+            background: #1d976c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 8px;
+        }
+
+        .btn:hover {
+            background: #159957;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <h1>
+        {% if course %}
+            {{ course.course_name }}
+        {% else %}
+            Course Not Found
+        {% endif %}
+    </h1>
+</div>
+
+<div class="container">
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'materials')">📚 Materials</button>
+        <button class="tab-btn" onclick="openTab(event, 'assignments')">📝 Assignments</button>
+    </div>
+
+    <div class="content-box">
+
+        <!-- MATERIALS -->
+        <div id="materials" class="tab-content">
+            <h2>Study Materials</h2>
+
+            {% if materials %}
+                {% for m in materials %}
+                    <div class="card">
+                        <h3>{{ m.title }}</h3>
+
+                        {% if m.type == 'file' %}
+                            <a class="btn"
+                               href="/materials/{{ m.file_path.split('/')[-1] }}"
+                               download>Download File</a>
+
+                        {% elif m.type == 'link' %}
+                            <a class="btn" href="{{ m.content }}" target="_blank">Open Link</a>
+
+                        {% elif m.type == 'text' %}
+                            <p>{{ m.content }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No materials available.</p>
+            {% endif %}
+        </div>
+
+        <!-- ASSIGNMENTS -->
+        <div id="assignments" class="tab-content" style="display:none;">
+            <h2>Assignments</h2>
+
+            {% if assignments %}
+                {% for a in assignments %}
+                    <div class="card">
+                        <h3>{{ a.title }}</h3>
+                        <p>{{ a.description }}</p>
+
+                        <a class="btn" href="/submit_assignment/{{ a.id }}">Submit</a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No assignments available.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function openTab(event, tabName) {
+
+    let tabs = document.getElementsByClassName("tab-content");
+    let buttons = document.getElementsByClassName("tab-btn");
+
+    for (let i = 0; i < tabs.length; i++) {
+        tabs[i].style.display = "none";
+    }
+
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("active");
+    }
+
+    document.getElementById(tabName).style.display = "block";
+    event.currentTarget.classList.add("active");
+}
+</script>
+
+</body>
+</html>
