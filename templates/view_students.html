@@ -5,82 +5,166 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            min-height: 100vh;
-            background:
-                linear-gradient(rgba(15,118,110,0.85), rgba(14,165,164,0.85));
-            color: white;
-            padding: 2rem;
-        }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
+/* ===== GLOBAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            color: black;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
+/* ===== BACKGROUND ===== */
+body {
+    min-height: 100vh;
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    background:
+        linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+        url("/static/images/college.jpg");
 
-        th {
-            background: #0f766e;
-            color: white;
-            padding: 12px;
-        }
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-        }
+    color: white;
+}
 
-        tr:hover {
-            background: #f5f5f5;
-        }
+/* ===== NAVBAR ===== */
+.navbar {
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        .delete-btn {
-            padding: 6px 12px;
-            background: #dc2626;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-        }
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        .delete-btn:hover {
-            background: #b91c1c;
-        }
+.logo {
+    width: 35px;
+    height: 35px;
+}
 
-        .back-btn {
-            display: inline-block;
-            margin-top: 1.5rem;
-            padding: 0.6rem 1.2rem;
-            background: #0f766e;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-        }
+.nav-title {
+    font-size: 18px;
+    font-weight: 600;
+}
 
-        .count {
-            margin-bottom: 1rem;
-            font-weight: bold;
-        }
+.logout-btn {
+    background: white;
+    color: #0f766e;
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.logout-btn:hover {
+    background: #e6e6e6;
+}
+
+/* ===== TITLE ===== */
+h1 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 800px;
+    margin: auto;
+
+    background: rgba(255,255,255,0.95);
+    color: black;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+/* ===== COUNT ===== */
+.count {
+    margin-bottom: 1rem;
+    font-weight: bold;
+    color: #0f766e;
+}
+
+/* ===== TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #0f766e;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+    background: #f1f5f9;
+}
+
+/* ===== BUTTON ===== */
+.delete-btn {
+    padding: 6px 12px;
+    background: #dc2626;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.delete-btn:hover {
+    background: #b91c1c;
+}
+
+/* ===== EMPTY ===== */
+.empty {
+    text-align: center;
+    padding: 20px;
+    color: gray;
+}
+
+/* ===== BACK ===== */
+.back-btn {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 18px;
+    background: #0f766e;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    text-align: center;
+    width: fit-content;
+}
+
+.back-btn:hover {
+    background: #0ea5a4;
+}
 
     </style>
 </head>
+
 <body>
+
+<!-- ===== NAVBAR ===== -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="logo">
+        <span class="nav-title">Enrolled Students</span>
+    </div>
+
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
 
 <h1>Students Enrolled in {{ course_name }}</h1>
 
@@ -102,6 +186,7 @@
             <td>{{ student.student_email }}</td>
             <td>
                 <a href="/remove_student/{{ student.id }}/{{ course_id }}"
+                   onclick="return confirm('Remove this student?')"
                    class="delete-btn">
                    Remove
                 </a>
@@ -110,11 +195,11 @@
         {% endfor %}
     </table>
     {% else %}
-        <p>No students enrolled yet.</p>
+        <div class="empty">No students enrolled yet.</div>
     {% endif %}
 
     <a href="/view_my_courses" class="back-btn">
-        Back to My Courses
+        ← Back to My Courses
     </a>
 
 </div>

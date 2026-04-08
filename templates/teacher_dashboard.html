@@ -7,7 +7,7 @@
 
 <style>
 
-/* ====== GLOBAL ====== */
+/* ===== GLOBAL ===== */
 * {
     margin: 0;
     padding: 0;
@@ -15,22 +15,44 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
+/* ===== BACKGROUND ===== */
 body {
-    background: linear-gradient(135deg, #0f766e, #0ea5a4);
     min-height: 100vh;
+
+    background:
+        linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+        url("/static/images/college.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
     color: white;
 }
 
-/* ====== NAVBAR ====== */
+/* ===== NAVBAR ===== */
 .navbar {
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.navbar h2 {
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 35px;
+    height: 35px;
+}
+
+.nav-title {
+    font-size: 18px;
     font-weight: 600;
 }
 
@@ -41,14 +63,13 @@ body {
     border-radius: 8px;
     text-decoration: none;
     font-weight: bold;
-    transition: 0.3s;
 }
 
 .logout-btn:hover {
     background: #e6e6e6;
 }
 
-/* ====== MAIN CONTENT ====== */
+/* ===== MAIN ===== */
 .container {
     padding: 3rem;
 }
@@ -59,19 +80,18 @@ body {
 
 .welcome h1 {
     font-size: 2rem;
-    margin-bottom: 0.5rem;
 }
 
-/* ====== CARD GRID ====== */
+/* ===== GRID ===== */
 .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 2rem;
 }
 
-/* ====== CARD STYLE ====== */
+/* ===== CARD ===== */
 .card {
-    background: white;
+    background: rgba(255,255,255,0.95);
     color: #000;
     padding: 2rem;
     border-radius: 16px;
@@ -85,32 +105,34 @@ body {
 }
 
 .card h3 {
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     color: #0f766e;
 }
 
 .card p {
     font-size: 0.9rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
     color: #555;
 }
 
+/* ===== BUTTON GROUP ===== */
+.btn-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
 .card a {
-    display: inline-block;
-    padding: 0.6rem 1.4rem;
+    padding: 6px 12px;
     background: linear-gradient(135deg, #0f766e, #0ea5a4);
     color: white;
     text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: 0.3s;
+    border-radius: 6px;
+    font-size: 13px;
 }
 
-.card a:hover {
-    opacity: 0.9;
-}
-
-/* ====== FOOTER ====== */
+/* ===== FOOTER ===== */
 .footer {
     text-align: center;
     margin-top: 4rem;
@@ -123,54 +145,50 @@ body {
 
 <body>
 
-<!-- ===== NAVBAR ===== -->
+<!-- NAVBAR -->
 <div class="navbar">
-    <h2>LMS Teacher Panel</h2>
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="logo">
+        <span class="nav-title">Teacher Dashboard</span>
+    </div>
+
     <a href="/logout" class="logout-btn">Logout</a>
 </div>
 
-<!-- ===== MAIN ===== -->
+<!-- MAIN -->
 <div class="container">
 
     <div class="welcome">
         <h1>Welcome, {{ teacher_name }} 👋</h1>
-        <p>Manage your courses and students efficiently.</p>
+        <p>Manage your courses and content efficiently.</p>
     </div>
 
     <div class="card-grid">
 
+        <!-- STATIC CARDS -->
         <div class="card">
             <h3>Create Course</h3>
-            <p>Add a new course and manage its content.</p>
+            <p>Add and organize new courses.</p>
             <a href="/create_course">Create</a>
         </div>
 
         <div class="card">
             <h3>View My Courses</h3>
-            <p>Check and manage courses created by you.</p>
+            <p>Manage all your created courses.</p>
             <a href="/view_my_courses">View</a>
         </div>
 
-        <div class="card">
-            <h3>Manage Assignments</h3>
-            <p>Create and view assignments for your courses.</p>
-            <a href="/view_my_courses">Open</a>
-        </div>
-
-        <div class="card">
-            <h3>Announcements</h3>
-            <p>Create and manage course announcements.</p>
-            <a href="/view_my_courses">Open</a>
-        </div>
-
+        <!-- DYNAMIC COURSE CARDS -->
         {% for c in courses %}
-            <div>
-                <h3>{{ c.course_name }}</h3>
+        <div class="card">
+            <h3>{{ c.course_name }}</h3>
+            <p>Manage this course</p>
 
-                <a href="/upload_material/{{ c.id }}" class="btn">
-                    Upload Materials
-                </a>
+            <div class="btn-group">
+                <a href="/upload_material/{{ c.id }}">Upload</a>
+                <a href="/view_materials/{{ c.id }}">Materials</a>
             </div>
+        </div>
         {% endfor %}
 
     </div>

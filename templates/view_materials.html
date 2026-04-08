@@ -4,91 +4,186 @@
     <title>Course Materials</title>
 
     <style>
-        body {
-            font-family: Arial;
-            background: linear-gradient(to right, #0f766e, #0ea5a4);
-            color: white;
-            padding: 2rem;
-        }
 
-        .container {
-            background: white;
-            color: black;
-            padding: 2rem;
-            border-radius: 12px;
-            max-width: 1000px;
-            margin: auto;
-        }
+/* ===== GLOBAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+/* ===== BACKGROUND ===== */
+body {
+    min-height: 100vh;
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    background:
+        linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+        url("/static/images/college.jpg");
 
-        th {
-            background: #0f766e;
-            color: white;
-            padding: 10px;
-        }
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
-        td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            text-align: center;
-        }
+    color: white;
+}
 
-        tr:hover {
-            background: #f1f5f9;
-        }
+/* ===== NAVBAR ===== */
+.navbar {
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        input {
-            padding: 5px;
-            font-size: 12px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        .btn {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            color: white;
-        }
+.logo {
+    width: 35px;
+    height: 35px;
+}
 
-        .edit-btn {
-            background: #2563eb;
-        }
+.nav-title {
+    font-size: 18px;
+    font-weight: 600;
+}
 
-        .delete-btn {
-            background: #dc2626;
-        }
+.logout-btn {
+    background: white;
+    color: #0f766e;
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+}
 
-        .download-link {
-            color: #2563eb;
-            text-decoration: none;
-        }
+.logout-btn:hover {
+    background: #e6e6e6;
+}
 
-        .top-btn {
-            display: block;
-            margin-bottom: 15px;
-            padding: 8px 12px;
-            background: #9333ea;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            width: fit-content;
-        }
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+
+    background: rgba(255,255,255,0.95);
+    color: black;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+/* ===== TITLE ===== */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #0f766e;
+}
+
+/* ===== TOP BUTTON ===== */
+.top-btn {
+    display: inline-block;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    background: linear-gradient(to right, #9333ea, #7c3aed);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+/* ===== TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #0f766e;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+tr:hover {
+    background: #f1f5f9;
+}
+
+/* ===== INPUT ===== */
+input {
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    display: inline-block;
+}
+
+.edit-btn {
+    background: #3b82f6;
+}
+
+.delete-btn {
+    background: #dc2626;
+}
+
+/* ===== LINKS ===== */
+.download-link {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.download-link:hover {
+    text-decoration: underline;
+}
+
+/* ===== BACK ===== */
+.back-btn {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 18px;
+    background: #0f766e;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    text-align: center;
+    width: fit-content;
+}
+
+.back-btn:hover {
+    background: #0ea5a4;
+}
 
     </style>
 </head>
 
 <body>
+
+<!-- ===== NAVBAR ===== -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="logo">
+        <span class="nav-title">Course Materials</span>
+    </div>
+
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
 
 <div class="container">
 
@@ -110,11 +205,7 @@
     {% for m in materials %}
     <tr>
 
-        <form method="POST" action="{{ url_for('edit_material', material_id=m.id) }}">
-
-        <td>
-            <input type="text" name="title" value="{{ m.title }}">
-        </td>
+        <td>{{ m.title }}</td>
 
         <td>{{ m.type }}</td>
 
@@ -126,19 +217,21 @@
             {% elif m.type == 'link' %}
                 <a href="{{ m.content }}" target="_blank">Open Link</a>
             {% else %}
-                <input type="text" name="content" value="{{ m.content }}">
+                {{ m.content }}
             {% endif %}
         </td>
 
         <td>
-            <button type="submit" class="btn edit-btn">Save</button>
+            <a href="/upload_material/{{ m.course_id }}?edit_id={{ m.id }}" class="btn edit-btn">
+                Edit
+            </a>
         </td>
 
-        </form>
-
         <td>
-            <a href="{{ url_for('delete_material', material_id=m.id) }}">
-                <button class="btn delete-btn">Delete</button>
+            <a href="{{ url_for('delete_material', material_id=m.id) }}"
+               onclick="return confirm('Delete this material?')"
+               class="btn delete-btn">
+                Delete
             </a>
         </td>
 
@@ -146,6 +239,10 @@
     {% endfor %}
 
 </table>
+
+<a href="/view_my_courses" class="back-btn">
+    ← Back to My Courses
+</a>
 
 </div>
 

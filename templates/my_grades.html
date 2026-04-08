@@ -5,92 +5,159 @@
 <title>My Grades</title>
 
 <style>
-    body {
-        margin: 0;
-        font-family: 'Segoe UI', sans-serif;
-        min-height: 100vh;
-        background:
-            linear-gradient(rgba(15,118,110,0.85), rgba(14,165,164,0.85)),
-            url("{{ url_for('static', filename='images/college.jpg') }}")
-            center/cover no-repeat;
-        color: white;
-        padding: 2rem;
-    }
 
-    h2 {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
+/* ===== GLOBAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-    .container {
-        max-width: 1000px;
-        margin: auto;
-        background: white;
-        color: black;
-        padding: 2rem;
-        border-radius: 15px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        overflow-x: auto;
-    }
+/* ===== BACKGROUND ===== */
+body {
+    min-height: 100vh;
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+    background:
+        linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+        url("/static/images/college.jpg");
 
-    th {
-        background: #0f766e;
-        color: white;
-        padding: 12px;
-    }
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
-    td {
-        padding: 12px;
-        border-bottom: 1px solid #ddd;
-        text-align: center;
-    }
+    color: white;
+}
 
-    tr:hover {
-        background: #f1f5f9;
-    }
+/* ===== NAVBAR ===== */
+.navbar {
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    .graded {
-        color: #16a34a;
-        font-weight: bold;
-    }
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-    .pending {
-        color: #dc2626;
-        font-style: italic;
-    }
+.logo {
+    width: 35px;
+    height: 35px;
+}
 
-    .no-data {
-        text-align: center;
-        padding: 2rem;
-        color: gray;
-    }
+.nav-title {
+    font-size: 18px;
+    font-weight: 600;
+}
 
-    .back-btn {
-        display: block;
-        margin: 20px auto 0;
-        padding: 10px 18px;
-        background: #0f766e;
-        color: white;
-        text-decoration: none;
-        border-radius: 8px;
-        text-align: center;
-        width: fit-content;
-        font-weight: 500;
-    }
+.logout-btn {
+    background: white;
+    color: #0f766e;
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+}
 
-    .back-btn:hover {
-        background: #0ea5a4;
-    }
+.logout-btn:hover {
+    background: #e6e6e6;
+}
+
+/* ===== TITLE ===== */
+h2 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 1000px;
+    margin: auto;
+
+    background: rgba(255,255,255,0.95);
+    color: black;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    overflow-x: auto;
+}
+
+/* ===== TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #0f766e;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+tr:hover {
+    background: #f1f5f9;
+}
+
+/* ===== STATUS ===== */
+.graded {
+    color: #16a34a;
+    font-weight: bold;
+}
+
+.pending {
+    color: #dc2626;
+    font-style: italic;
+}
+
+/* ===== EMPTY ===== */
+.no-data {
+    text-align: center;
+    padding: 2rem;
+    color: gray;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-btn {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 18px;
+    background: #0f766e;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    text-align: center;
+    width: fit-content;
+    font-weight: 500;
+}
+
+.back-btn:hover {
+    background: #0ea5a4;
+}
 
 </style>
 </head>
 
 <body>
+
+<!-- ===== NAVBAR ===== -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="logo">
+        <span class="nav-title">My Grades</span>
+    </div>
+
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
 
 <h2>My Grades</h2>
 

@@ -1,76 +1,145 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Student Registration</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(rgba(15,118,110,0.85), rgba(14,165,164,0.85));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+<style>
 
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            width: 400px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
+/* ===== GLOBAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-        h2 {
-            text-align: center;
-            color: #0f766e;
-        }
+/* ===== BACKGROUND ===== */
+body {
+    min-height: 100vh;
 
-        input {
-            width: 100%;
-            padding: 0.7rem;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
+    background:
+        linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+        url("/static/images/college.jpg");
 
-        button {
-            width: 100%;
-            padding: 0.7rem;
-            background: #0f766e;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
-        button:hover {
-            background: #0ea5a4;
-        }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
 
-        .message {
-            text-align: center;
-            margin-bottom: 1rem;
-            color: red;
-        }
+/* ===== BRANDING ===== */
+.branding {
+    margin-top: 3rem;
+    text-align: center;
+}
 
-        .success {
-            color: green;
-        }
+.branding img {
+    width: 80px;
+    margin-bottom: 1rem;
+}
 
-        .login-link {
-            text-align: center;
-            margin-top: 1rem;
-        }
-    </style>
+.branding h1 {
+    font-size: 2rem;
+}
+
+.branding p {
+    opacity: 0.9;
+}
+
+/* ===== CARD ===== */
+.card {
+    margin-top: 2rem;
+    background: rgba(255,255,255,0.95);
+    padding: 2rem;
+    border-radius: 16px;
+    width: 400px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    color: black;
+}
+
+h2 {
+    text-align: center;
+    color: #0f766e;
+    margin-bottom: 1rem;
+}
+
+/* ===== INPUTS ===== */
+input {
+    width: 100%;
+    padding: 0.7rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+input:focus {
+    outline: none;
+    border-color: #0ea5a4;
+}
+
+/* ===== BUTTON ===== */
+button {
+    width: 100%;
+    padding: 0.7rem;
+    background: linear-gradient(135deg, #0f766e, #0ea5a4);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* ===== MESSAGE ===== */
+.message {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
+/* ===== LINK ===== */
+.login-link {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.login-link a {
+    color: #0f766e;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+</style>
 </head>
 
 <body>
 
+<!-- ===== BRANDING ===== -->
+<div class="branding">
+    <img src="{{ url_for('static', filename='images/logo.jpg') }}">
+    <h1>KRISTU JAYANTI UNIVERSITY</h1>
+    <p>Learning Management System</p>
+</div>
+
+<!-- ===== FORM ===== -->
 <div class="card">
+
     <h2>Student Registration</h2>
 
     {% if message %}
@@ -90,8 +159,9 @@
     </form>
 
     <div class="login-link">
-        <a href="/">Back to Login</a>
+        <a href="/">← Back to Login</a>
     </div>
+
 </div>
 
 </body>

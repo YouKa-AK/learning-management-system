@@ -864,52 +864,79 @@ def delete_post(post_id, course_id):
 
     return redirect(f'/discussions/{course_id}') 
 
-@app.route('/upload_material/<int:course_id>', methods=['GET', 'POST'])
+@app.route('/upload_material/<int:course_id>', methods=['GET','POST'])
 def upload_material(course_id):
 
     if 'user_id' not in session or session['role'] != 'teacher':
         return redirect('/')
 
     conn = get_db_connection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(dictionary=True)
+
+    edit_id = request.args.get('edit_id')
+    material = None
+
+    # 🔹 If editing → fetch existing data
+    if edit_id:
+        cursor.execute("SELECT * FROM materials WHERE id=%s", (edit_id,))
+        material = cursor.fetchone()
 
     if request.method == 'POST':
         title = request.form['title']
         material_type = request.form['type']
+        edit_id = request.form.get('edit_id')
 
-        file_path = None
         content = None
+        file_path = None
 
-        # 📁 FILE UPLOAD
+        # 🔹 FILE
         if material_type == 'file':
-            file = request.files['file']
+            file = request.files.get('file')
 
-            if file and allowed_file(file.filename):
+            if file and file.filename != '':
                 filename = secure_filename(file.filename)
-
                 filepath = os.path.join(app.config['MATERIAL_FOLDER'], filename)
                 file.save(filepath)
+                file_path = filename
+            elif edit_id:
+                cursor.execute("SELECT file_path FROM materials WHERE id=%s", (edit_id,))
+                old = cursor.fetchone()
+                file_path = old['file_path']
 
-                file_path = filepath
-
-        # 🔗 LINK
+        # 🔹 LINK
         elif material_type == 'link':
-            content = request.form['link']
+            content = request.form.get('link')
 
-        # 📝 TEXT
+        # 🔹 TEXT
         elif material_type == 'text':
-            content = request.form['text']
+            content = request.form.get('text')
 
-        cursor.execute("""
-            INSERT INTO materials (course_id, title, type, content, file_path)
-            VALUES (%s, %s, %s, %s, %s)
-        """, (course_id, title, material_type, content, file_path))
+        # 🔹 EDIT
+        if edit_id:
+            cursor.execute("""
+                UPDATE materials
+                SET title=%s, type=%s, content=%s, file_path=%s
+                WHERE id=%s
+            """, (title, material_type, content, file_path, edit_id))
+
+        # 🔹 ADD
+        else:
+            cursor.execute("""
+                INSERT INTO materials (course_id, title, type, content, file_path)
+                VALUES (%s, %s, %s, %s, %s)
+            """, (course_id, title, material_type, content, file_path))
 
         conn.commit()
+        conn.close()
 
+        # ✅ FIXED REDIRECT (IMPORTANT)
         return redirect(url_for('view_materials', course_id=course_id))
 
-    return render_template('upload_material.html', course_id=course_id)
+    return render_template(
+        'upload_material.html',
+        course_id=course_id,
+        material=material
+    )
 
 @app.route('/view_materials/<int:course_id>')
 def view_materials(course_id):
@@ -944,8 +971,18 @@ def edit_material(material_id):
     content = request.form.get('content')
 
     conn = get_db_connection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(dictionary=True)   # ✅ IMPORTANT
 
+    # 🔹 Get course_id safely
+    cursor.execute("SELECT course_id FROM materials WHERE id=%s", (material_id,))
+    course = cursor.fetchone()
+
+    if not course:
+        return redirect('/teacher_dashboard')   # fallback safety
+
+    course_id = course['course_id']   # ✅ correct way
+
+    # 🔹 Update
     cursor.execute("""
         UPDATE materials
         SET title = %s, content = %s
@@ -955,7 +992,8 @@ def edit_material(material_id):
     conn.commit()
     conn.close()
 
-    return redirect(request.referrer)
+    # 🔹 Force redirect to teacher materials page
+    return redirect(f'/view_materials/{course_id}')
 
 @app.route('/delete_material/<int:material_id>')
 def delete_material(material_id):

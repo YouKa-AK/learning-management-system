@@ -4,67 +4,186 @@
     <title>Upload Material</title>
 
     <style>
-        body {
-            font-family: Arial;
-            background: linear-gradient(to right, #1d976c, #93f9b9);
-            margin: 0;
-        }
 
-        .container {
-            width: 40%;
-            margin: 80px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-        }
+/* ===== GLOBAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-        h2 {
-            text-align: center;
-            color: #1d976c;
-        }
+/* ===== BACKGROUND ===== */
+body {
+    min-height: 100vh;
 
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-        }
+    background:
+        linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+        url("/static/images/college.jpg");
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #1d976c;
-            color: white;
-            border: none;
-            margin-top: 15px;
-            cursor: pointer;
-        }
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
-        button:hover {
-            background: #159957;
-        }
+    color: white;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 35px;
+    height: 35px;
+}
+
+.nav-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.logout-btn {
+    background: white;
+    color: #0f766e;
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    width: 45%;
+    margin: 50px auto;
+
+    background: rgba(255,255,255,0.95);
+    color: black;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+/* ===== TITLE ===== */
+h2 {
+    text-align: center;
+    color: #0f766e;
+    margin-bottom: 10px;
+}
+
+.edit-badge {
+    text-align: center;
+    color: #ef4444;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* ===== FORM ===== */
+label {
+    font-weight: 500;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #0ea5a4;
+}
+
+/* ===== BUTTON ===== */
+button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #0f766e, #0ea5a4);
+    color: white;
+    border: none;
+    margin-top: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* ===== BACK ===== */
+.back-btn {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    background: #334155;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.back-btn:hover {
+    background: #1e293b;
+}
+
     </style>
 </head>
 
 <body>
 
+<!-- ===== NAVBAR ===== -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="logo">
+        <span class="nav-title">Upload Material</span>
+    </div>
+
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
+
 <div class="container">
 
-    <h2>Upload Study Material</h2>
+    <h2>
+        {% if material %}
+            ✏️ Edit Material
+        {% else %}
+            📤 Upload Study Material
+        {% endif %}
+    </h2>
 
-    <!-- DEBUG TEXT -->
-    <p style="text-align:center;">Course ID: {{ course_id }}</p>
+    {% if material %}
+        <div class="edit-badge">Editing Mode</div>
+    {% endif %}
 
     <form method="POST" enctype="multipart/form-data">
 
+        {% if material %}
+            <input type="hidden" name="edit_id" value="{{ material.id }}">
+        {% endif %}
+
         <label>Title</label>
-        <input type="text" name="title" required>
+        <input type="text" name="title"
+               value="{{ material.title if material else '' }}" required>
 
         <label>Material Type</label>
         <select name="type" id="typeSelect" onchange="showFields()" required>
             <option value="">Select Type</option>
-            <option value="file">File</option>
-            <option value="link">YouTube Link</option>
-            <option value="text">Notes</option>
+            <option value="file" {% if material and material.type=='file' %}selected{% endif %}>File</option>
+            <option value="link" {% if material and material.type=='link' %}selected{% endif %}>YouTube Link</option>
+            <option value="text" {% if material and material.type=='text' %}selected{% endif %}>Notes</option>
         </select>
 
         <div id="fileField" style="display:none;">
@@ -74,17 +193,28 @@
 
         <div id="linkField" style="display:none;">
             <label>Paste Link</label>
-            <input type="text" name="link" placeholder="https://youtube.com/...">
+            <input type="text" name="link"
+                   value="{{ material.content if material and material.type=='link' else '' }}">
         </div>
 
         <div id="textField" style="display:none;">
             <label>Enter Notes</label>
-            <textarea name="text"></textarea>
+            <textarea name="text">{{ material.content if material and material.type=='text' else '' }}</textarea>
         </div>
 
-        <button type="submit">Upload</button>
+        <button type="submit">
+            {% if material %}
+                Update Material
+            {% else %}
+                Upload Material
+            {% endif %}
+        </button>
 
     </form>
+
+    <a href="{{ url_for('view_materials', course_id=course_id) }}" class="back-btn">
+        ← Back to Materials
+    </a>
 
 </div>
 
@@ -106,6 +236,10 @@ function showFields() {
         document.getElementById("textField").style.display = "block";
     }
 }
+
+window.onload = function() {
+    showFields();
+};
 </script>
 
 </body>

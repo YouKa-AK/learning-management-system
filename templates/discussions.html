@@ -5,123 +5,194 @@
 <title>Discussions — {{ course.course_name }}</title>
 
 <style>
-    body {
-        margin: 0;
-        font-family: 'Segoe UI', sans-serif;
-        min-height: 100vh;
-        background:
-            linear-gradient(rgba(15,118,110,0.85), rgba(14,165,164,0.85)),
-            url("{{ url_for('static', filename='images/college.jpg') }}")
-            center/cover no-repeat;
-        padding: 20px;
-    }
 
-    h2 {
-        text-align: center;
-        color: white;
-        margin-bottom: 20px;
-    }
+/* ===== GLOBAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-    .container {
-        max-width: 800px;
-        margin: auto;
-    }
+/* ===== BACKGROUND ===== */
+body {
+    min-height: 100vh;
 
-    .card {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
+    background:
+        linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+        url("/static/images/college.jpg");
 
-    textarea {
-        width: 100%;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        resize: none;
-        margin-bottom: 10px;
-        font-size: 14px;
-    }
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
-    .btn {
-        background: linear-gradient(to right, #0f766e, #1fa39a);
-        color: white;
-        border: none;
-        padding: 8px 14px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 13px;
-    }
+    color: white;
+}
 
-    .btn:hover {
-        opacity: 0.9;
-    }
+/* ===== NAVBAR ===== */
+.navbar {
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    .post {
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 15px;
-        background: #f9fafb;
-    }
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-    .author {
-        font-weight: bold;
-        color: #0f766e;
-    }
+.logo {
+    width: 35px;
+    height: 35px;
+}
 
-    .meta {
-        font-size: 12px;
-        color: gray;
-    }
+.nav-title {
+    font-weight: 600;
+    font-size: 18px;
+}
 
-    .content {
-        margin: 10px 0;
-        font-size: 14px;
-    }
+.logout-btn {
+    background: white;
+    color: #0f766e;
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+}
 
-    .delete {
-        color: red;
-        font-size: 12px;
-        text-decoration: none;
-    }
+.logout-btn:hover {
+    background: #e6e6e6;
+}
 
-    .reply-box {
-        margin-left: 30px;
-        margin-top: 10px;
-        border-left: 3px solid #ddd;
-        padding-left: 15px;
-    }
+/* ===== TITLE ===== */
+h2 {
+    text-align: center;
+    margin: 20px 0;
+}
 
-    .reply {
-        margin-bottom: 10px;
-        background: #ffffff;
-        padding: 10px;
-        border-radius: 8px;
-    }
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 800px;
+    margin: auto;
+}
 
-    details summary {
-        cursor: pointer;
-        color: #0f766e;
-        font-weight: 500;
-        margin-top: 8px;
-    }
+/* ===== CARD ===== */
+.card {
+    background: rgba(255,255,255,0.95);
+    color: black;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
 
-    .back-link {
-        display: block;
-        text-align: center;
-        margin-top: 20px;
-        color: white;
-        text-decoration: none;
-        font-weight: 500;
-    }
+/* ===== TEXTAREA ===== */
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: none;
+    margin-bottom: 10px;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #0ea5a4;
+}
+
+/* ===== BUTTON ===== */
+.btn {
+    background: linear-gradient(to right, #0f766e, #1fa39a);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* ===== POST ===== */
+.post {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #f9fafb;
+}
+
+.author {
+    font-weight: bold;
+    color: #0f766e;
+}
+
+.meta {
+    font-size: 12px;
+    color: gray;
+}
+
+.content {
+    margin: 10px 0;
+}
+
+.delete {
+    color: red;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+/* ===== REPLIES ===== */
+.reply-box {
+    margin-left: 30px;
+    margin-top: 10px;
+    border-left: 3px solid #ddd;
+    padding-left: 15px;
+}
+
+.reply {
+    margin-bottom: 10px;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* ===== DETAILS ===== */
+details summary {
+    cursor: pointer;
+    color: #0f766e;
+    font-weight: 500;
+    margin-top: 8px;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: white;
+    text-decoration: none;
+}
 
 </style>
 </head>
 
 <body>
+
+<!-- ===== NAVBAR ===== -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="logo">
+        <span class="nav-title">Discussions</span>
+    </div>
+
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
 
 <h2>Discussions — {{ course.course_name }}</h2>
 

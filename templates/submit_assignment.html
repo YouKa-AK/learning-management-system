@@ -4,95 +4,165 @@
     <title>Submit Assignment</title>
 
     <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            min-height: 100vh;
-            background:
-                linear-gradient(rgba(15,118,110,0.85), rgba(14,165,164,0.85)),
-                url("{{ url_for('static', filename='images/college.jpg') }}")
-                center/cover no-repeat;
-            color: white;
-            padding: 2rem;
-        }
 
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            color: black;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
+/* ===== GLOBAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-        h2 {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
+/* ===== BACKGROUND ===== */
+body {
+    min-height: 100vh;
 
-        p {
-            margin: 6px 0;
-        }
+    background:
+        linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+        url("/static/images/college.jpg");
 
-        .message {
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-weight: 600;
-        }
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
-        .success {
-            background: #d1fae5;
-            color: #065f46;
-        }
+    color: white;
+}
 
-        .error {
-            background: #fee2e2;
-            color: #991b1b;
-        }
+/* ===== NAVBAR ===== */
+.navbar {
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        .submitted {
-            background: #e0f2fe;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        input[type="file"] {
-            width: 100%;
-            margin: 10px 0;
-        }
+.logo {
+    width: 35px;
+    height: 35px;
+}
 
-        .btn {
-            width: 100%;
-            padding: 10px;
-            background: #0f766e;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-        }
+.nav-title {
+    font-size: 18px;
+    font-weight: 600;
+}
 
-        .btn:hover {
-            background: #0ea5a4;
-        }
+.logout-btn {
+    background: white;
+    color: #0f766e;
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+}
 
-        .back {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            text-decoration: none;
-            color: #0f766e;
-            font-weight: 600;
-        }
-    </style>
+.logout-btn:hover {
+    background: #e6e6e6;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+
+    background: rgba(255,255,255,0.95);
+    color: black;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+/* ===== TITLE ===== */
+h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #0f766e;
+}
+
+p {
+    margin: 6px 0;
+}
+
+/* ===== MESSAGE ===== */
+.message {
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.success {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ===== SUBMITTED BOX ===== */
+.submitted {
+    background: #e0f2fe;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* ===== INPUT ===== */
+input[type="file"] {
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* ===== BUTTON ===== */
+.btn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, #0f766e, #0ea5a4);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* ===== BACK ===== */
+.back {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #0f766e;
+    font-weight: 600;
+}
+
+</style>
 </head>
 
 <body>
+
+<!-- ===== NAVBAR ===== -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="logo">
+        <span class="nav-title">Submit Assignment</span>
+    </div>
+
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
 
 <div class="container">
 
@@ -103,14 +173,14 @@
     <p><strong>Description:</strong> {{ assignment.description }}</p>
     <p><strong>Max Marks:</strong> {{ assignment.max_marks }}</p>
 
-    <!-- ✅ MESSAGE -->
+    <!-- MESSAGE -->
     {% if message %}
         <div class="message {{ 'success' if status == 'success' else 'error' }}">
             {{ message }}
         </div>
     {% endif %}
 
-    <!-- ✅ EXISTING SUBMISSION -->
+    <!-- EXISTING -->
     {% if existing %}
         <div class="submitted">
             ✅ Submitted at: {{ existing.submitted_at }} <br>
@@ -118,7 +188,7 @@
         </div>
     {% endif %}
 
-    <!-- ✅ FORM -->
+    <!-- FORM -->
     <form method="POST" enctype="multipart/form-data">
         <label>Upload File</label>
         <input type="file" name="file" required>

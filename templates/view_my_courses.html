@@ -7,39 +7,86 @@
 
 <style>
 
-/* BODY */
-body {
+/* ===== GLOBAL ===== */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: 'Segoe UI', sans-serif;
+}
+
+/* ===== BACKGROUND ===== */
+body {
     min-height: 100vh;
 
     background:
-        linear-gradient(rgba(15,118,110,0.85), rgba(14,165,164,0.85)),
-        url("{{ url_for('static', filename='images/college.jpg') }}")
-        center/cover no-repeat;
+        linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+        url("/static/images/college.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
     color: white;
 }
 
-/* HEADING */
-h1 {
-    text-align: center;
-    margin-top: 30px;
+/* ===== NAVBAR ===== */
+.navbar {
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* GRID CONTAINER */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 35px;
+    height: 35px;
+}
+
+.nav-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.logout-btn {
+    background: white;
+    color: #0f766e;
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.logout-btn:hover {
+    background: #e6e6e6;
+}
+
+/* ===== HEADING ===== */
+h1 {
+    text-align: center;
+    margin: 30px 0 10px;
+}
+
+/* ===== GRID ===== */
 .course-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 25px;
     width: 90%;
     max-width: 1200px;
-    margin: 40px auto;
+    margin: 30px auto;
 }
 
-/* CARD */
+/* ===== CARD ===== */
 .course-card {
-    background: white;
+    background: rgba(255,255,255,0.95);
     color: black;
     border-radius: 16px;
     padding: 20px;
@@ -51,34 +98,36 @@ h1 {
     transform: translateY(-5px);
 }
 
-/* COURSE TITLE */
+/* ===== TEXT ===== */
 .course-title {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 5px;
+    color: #0f766e;
 }
 
-/* COURSE INFO */
 .course-info {
     font-size: 13px;
     color: #555;
     margin-bottom: 15px;
 }
 
-/* BUTTON GROUP */
+/* ===== BUTTON GROUP ===== */
 .btn-group {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
 }
 
-/* BUTTON BASE */
+/* ===== BUTTON ===== */
 .btn {
     padding: 6px 10px;
     border-radius: 20px;
     font-size: 12px;
     text-decoration: none;
     color: white;
+    min-width: 90px;
+    text-align: center;
     transition: 0.2s;
 }
 
@@ -98,7 +147,7 @@ h1 {
     transform: scale(1.05);
 }
 
-/* BACK BUTTON */
+/* ===== BACK ===== */
 .back-btn {
     display: block;
     margin: 20px auto;
@@ -110,15 +159,24 @@ h1 {
     text-decoration: none;
 }
 
-.btn {
-    min-width: 90px;
-    text-align: center;
+.back-btn:hover {
+    background: #0ea5a4;
 }
 
 </style>
 </head>
 
 <body>
+
+<!-- ===== NAVBAR ===== -->
+<div class="navbar">
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="logo">
+        <span class="nav-title">My Courses</span>
+    </div>
+
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
 
 <h1>My Courses</h1>
 
