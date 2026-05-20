@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Announcements</title>
+    <style>
+
+    /* ===== GLOBAL ===== */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* ===== BACKGROUND ===== */
+    body {
+        min-height: 100vh;
+
+        background:
+            linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+            url("/static/images/college.jpg");
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        color: white;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+        background: rgba(0,0,0,0.3);
+        backdrop-filter: blur(8px);
+        padding: 15px 30px;
+    }
+
+    .navbar h2 {
+        font-weight: 600;
+    }
+
+    /* ===== MAIN CONTAINER ===== */
+    .container {
+        padding: 30px;
+        max-width: 900px;
+        margin: auto;
+    }
+
+    /* ===== BACK BUTTON ===== */
+    .back-btn {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 8px 14px;
+        background: #0f766e;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+    }
+
+    .back-btn:hover {
+        background: #0ea5a4;
+    }
+
+    /* ===== HEADINGS ===== */
+    h2 {
+        margin-bottom: 15px;
+    }
+
+    /* ===== FORM BOX ===== */
+    .form-box {
+        background: rgba(255,255,255,0.95);
+        color: black;
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+    }
+
+    /* ===== INPUTS ===== */
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    textarea {
+        resize: none;
+    }
+
+    /* ===== BUTTON ===== */
+    .btn {
+        padding: 10px 15px;
+        background: linear-gradient(to right, #0f766e, #1fa39a);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+    }
+
+    /* ===== ANNOUNCEMENT CARD ===== */
+    .announcement {
+        background: rgba(255,255,255,0.95);
+        color: black;
+        padding: 18px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .announcement h3 {
+        color: #0f766e;
+        margin-bottom: 8px;
+    }
+
+    /* ===== EMPTY STATE ===== */
+    .empty {
+        background: rgba(255,255,255,0.95);
+        color: gray;
+        text-align: center;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <h2>Admin - Announcements</h2>
+</div>
+
+<div class="container">
+
+    <a href="/admin_dashboard" class="back-btn">← Back to Dashboard</a>
+
+    <h2>Create Announcement</h2>
+
+    <div class="form-box">
+        <form method="POST">
+            <input type="text" name="title" placeholder="Title" required>
+            <textarea name="message" placeholder="Message" rows="4" required></textarea>
+            <button type="submit" class="btn">Post</button>
+        </form>
+    </div>
+
+    <h2>All Announcements</h2>
+
+    {% for a in announcements %}
+    <div class="announcement">
+        <h3>{{ a.title }}</h3>
+        <p>{{ a.content }}</p>
+    </div>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

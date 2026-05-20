@@ -7,117 +7,144 @@
 
 <style>
 
-/* ========== RESET ========== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-}
+    /* ===== RESET ===== */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-/* ========== HEADER BAR ========== */
-.header {
-    background: #0f766e;
-    color: white;
-    padding: 15px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    /* ===== BACKGROUND (IMAGE + OVERLAY) ===== */
+    body {
+        min-height: 100vh;
 
-.header h2 {
-    font-weight: 600;
-}
+        background:
+            linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+            url("/static/images/college.jpg");
 
-.logout-btn {
-    background: #e5e7eb;
-    padding: 8px 18px;
-    border-radius: 8px;
-    text-decoration: none;
-    color: #0f766e;
-    font-weight: 600;
-    transition: 0.3s;
-}
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
 
-.logout-btn:hover {
-    background: #d1d5db;
-}
+        color: white;
+    }
 
-/* ========== BACKGROUND ========== */
-body {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #1f7a7a, #2ec4b6);
-    color: white;
-}
+    /* ===== NAVBAR (GLASS EFFECT) ===== */
+    .header {
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
 
-/* ========== WELCOME SECTION ========== */
-.welcome-section {
-    padding: 60px 80px 30px;
-}
+        padding: 15px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-.welcome-section h1 {
-    font-size: 36px;
-    margin-bottom: 10px;
-}
+    .header h2 {
+        font-weight: 600;
+    }
 
-.welcome-section p {
-    font-size: 16px;
-}
+    /* ===== LOGOUT BUTTON ===== */
+    .logout-btn {
+        background: white;
+        padding: 8px 18px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #0f766e;
+        font-weight: 600;
+        transition: 0.3s;
+    }
 
-/* ========== CARD SECTION ========== */
-.card-container {
-    display: flex;
-    gap: 40px;
-    padding: 20px 80px;
-    flex-wrap: wrap;
-}
+    .logout-btn:hover {
+        background: #d1d5db;
+    }
 
-.card {
-    background: #f3f4f6;
-    color: #111;
-    flex: 1;
-    min-width: 320px;
-    padding: 40px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-}
+    /* ===== WELCOME SECTION ===== */
+    .welcome-section {
+        padding: 60px 80px 30px;
+    }
 
-.card h3 {
-    color: #0f766e;
-    margin-bottom: 15px;
-}
+    .welcome-section h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
 
-.card p {
-    margin-bottom: 20px;
-    color: #374151;
-}
+    .welcome-section p {
+        font-size: 16px;
+        color: #e5e7eb;
+    }
 
-.card a {
-    display: inline-block;
-    padding: 10px 22px;
-    background: #0f766e;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: 0.3s;
-}
+    /* ===== CARD CONTAINER ===== */
+    .card-container {
+        display: flex;
+        gap: 40px;
+        padding: 20px 80px;
+        flex-wrap: wrap;
+        justify-content: center; 
+    }
 
-.card a:hover {
-    background: #0ea5a4;
-}
+    
+    .card {
+        background: white;
+        color: #000;
 
-/* ========== FOOTER ========== */
-.footer {
-    text-align: center;
-    margin-top: 60px;
-    padding-bottom: 20px;
-    font-size: 14px;
-    opacity: 0.9;
-}
+        flex: 1;
+        min-width: 320px;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+
+        box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+
+        transition: 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* TEXT FIX */
+    .card h3 {
+        color: #0f766e;
+        margin-bottom: 15px;
+    }
+
+    .card p {
+        margin-bottom: 20px;
+        color: #555;
+    }
+
+    /* ===== BUTTON ===== */
+    .card a {
+        display: inline-block;
+        padding: 10px 22px;
+
+        background: linear-gradient(135deg, #0f766e, #0ea5a4);
+
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .card a:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(14,165,164,0.4);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+        text-align: center;
+        margin-top: 60px;
+        padding-bottom: 20px;
+        font-size: 14px;
+        opacity: 0.9;
+    }
 
 </style>
+
 </head>
 
 <body>
@@ -125,7 +152,11 @@ body {
 <!-- Header -->
 <div class="header">
     <h2>LMS Student Panel</h2>
-    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+
+    <div class="nav-right">
+        <a href="/profile" class="logout-btn">Profile</a>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </div>
 </div>
 
 <!-- Welcome Section -->

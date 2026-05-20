@@ -26,7 +26,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
 
-    color: white;
+    color: rgb(255, 255, 255);
 }
 
 /* ===== NAVBAR ===== */
@@ -120,7 +120,7 @@ textarea:focus {
 
 /* ===== POST ===== */
 .post {
-    border: 1px solid #ddd;
+    border: 1px solid #000000;
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 15px;
@@ -134,7 +134,7 @@ textarea:focus {
 
 .meta {
     font-size: 12px;
-    color: gray;
+    color: rgb(68, 67, 67);
 }
 
 .content {
@@ -151,13 +151,13 @@ textarea:focus {
 .reply-box {
     margin-left: 30px;
     margin-top: 10px;
-    border-left: 3px solid #ddd;
+    border-left: 3px solid #000000;
     padding-left: 15px;
 }
 
 .reply {
     margin-bottom: 10px;
-    background: #ffffff;
+    background: #fffdfd;
     padding: 10px;
     border-radius: 8px;
 }
@@ -175,8 +175,55 @@ details summary {
     display: block;
     text-align: center;
     margin-top: 20px;
-    color: white;
+    color: rgb(255, 255, 255);
     text-decoration: none;
+}
+
+.card p,
+.message-content {
+    color: #000000;   /* dark readable text */
+}
+
+/* ===== FIX DISCUSSION TEXT VISIBILITY ===== */
+
+/* Main post content */
+.post .content {
+    color: #111 !important;
+    font-weight: 500;
+}
+
+/* Reply content */
+.reply .content {
+    color: #111 !important;
+}
+
+/* Author + metadata */
+.post .author,
+.reply .author {
+    color: #0f766e !important;
+}
+
+.meta {
+    color: #555 !important;
+}
+
+/* Ensure background is proper */
+.post {
+    background: #ffffff !important;
+}
+
+.reply {
+    background: #f8fafc !important;
+}
+
+/* Input text */
+textarea {
+    color: #111 !important;
+}
+
+/* Placeholder */
+textarea::placeholder {
+    color: #666;
 }
 
 </style>

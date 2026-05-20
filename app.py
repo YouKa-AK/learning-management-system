@@ -6,18 +6,16 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.secret_key = "secretkey"
 
-# 📂 Upload folders
 SUBMISSION_FOLDER = 'uploads/submissions'
 MATERIAL_FOLDER = 'uploads/materials'
 
-# 📁 Allowed file types
 ALLOWED_EXTENSIONS = {'pdf','doc','docx','txt','zip','png','jpg','ppt','pptx'}
 
-# ⚙️ Config
+# Configuring submission and materials
 app.config['SUBMISSION_FOLDER'] = SUBMISSION_FOLDER
 app.config['MATERIAL_FOLDER'] = MATERIAL_FOLDER
 
-# 📁 Create folders if not exist
+# Creating folders if not exist
 os.makedirs(SUBMISSION_FOLDER, exist_ok=True)
 os.makedirs(MATERIAL_FOLDER, exist_ok=True)
 
@@ -62,7 +60,10 @@ def login():
             session['role'] = user[1]
             session['email'] = email
 
-            if user[1] == "teacher":
+            if user[1] == "admin":
+                return redirect('/admin_dashboard')
+
+            elif user[1] == "teacher":
                 return redirect('/teacher_dashboard')
             
             elif user[1] == "student":
@@ -113,13 +114,13 @@ def register():
                     (email, password, "teacher")
                 )
 
-                conn.commit()   # 🔥 IMPORTANT
+                conn.commit()   #  IMPORTANT
 
                 message = "Registration Successful!"
                 status = "success"
 
         except Exception as e:
-            print("ERROR:", e)   # 🔥 THIS WILL SHOW REAL ISSUE
+            print("ERROR:", e)   # THIS WILL SHOW REAL ISSUE
             message = "Something went wrong"
             status = "error"
 
@@ -572,7 +573,7 @@ def submit_assignment(assignment_id):
         if file and allowed_file(file.filename):
 
             filename = secure_filename(f"{session['email']}_{assignment_id}_{file.filename}")
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file_path = os.path.join(app.config['SUBMISSION_FOLDER'], filename)
 
             file.save(file_path)
 
@@ -635,7 +636,7 @@ def view_submissions(assignment_id):
     cursor.execute("""
         SELECT s.*, u.email as student_email, g.marks, g.feedback
         FROM submissions s
-        JOIN users u ON s.student_id = u.id
+        JOIN users u ON s.student_email = u.email
         LEFT JOIN grades g ON s.id = g.submission_id
         WHERE s.assignment_id = %s
     """, (assignment_id,))
@@ -652,6 +653,7 @@ def view_submissions(assignment_id):
         assignment=assignment,
         assignment_id=assignment_id
     )
+
 
 @app.route('/my_grades')
 def my_grades():
@@ -1074,6 +1076,225 @@ def grade_submission_inline():
     conn.close()
 
     return redirect(request.referrer)   # stay on same page
+
+@app.route('/profile')
+def profile():
+
+    if 'user_id' not in session:
+        return redirect('/')
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    user_id = session['user_id']
+    role = session['role']
+
+    if role == 'student':
+        cursor.execute("""
+            SELECT u.email, u.role,
+                   s.name, s.class, s.roll_number
+            FROM users u
+            JOIN student s ON u.email = s.email
+            WHERE u.id = %s
+        """, (user_id,))
+
+    elif role == 'teacher':
+        cursor.execute("""
+            SELECT u.email, u.role,
+                   t.name, t.emp_code
+            FROM users u
+            JOIN teacher t ON u.email = t.email
+            WHERE u.id = %s
+        """, (user_id,))
+
+    user = cursor.fetchone()
+
+    return render_template('profile.html', user=user)
+
+@app.route('/admin_dashboard')
+def admin_dashboard():
+    if 'user_id' not in session or session['role'] != 'admin':
+        return redirect('/')
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM users")
+    total_users = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM users WHERE role='student'")
+    total_students = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM users WHERE role='teacher'")
+    total_teachers = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM courses")
+    total_courses = cursor.fetchone()[0]
+
+    cursor.close()
+    conn.close()
+
+    return render_template('admin/dashboard.html',
+                           total_users=total_users,
+                           total_students=total_students,
+                           total_teachers=total_teachers,
+                           total_courses=total_courses)
+
+@app.route('/admin/users')
+def admin_users():
+    if 'user_id' not in session or session['role'] != 'admin':
+        return redirect('/')
+
+    search = request.args.get('search', '')
+    role = request.args.get('role', '')
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    query = """
+        SELECT 
+            u.id,
+            u.email,
+            u.role,
+            COALESCE(s.name, t.name) AS name
+        FROM users u
+        LEFT JOIN student s ON u.email = s.email
+        LEFT JOIN teacher t ON u.email = t.email
+        WHERE u.role != 'admin'
+    """
+
+    params = []
+
+    # 🔍 Search
+    if search:
+        query += " AND (u.email LIKE %s OR s.name LIKE %s OR t.name LIKE %s)"
+        search_term = f"%{search}%"
+        params.extend([search_term, search_term, search_term])
+
+    # 🎯 Filter
+    if role:
+        query += " AND u.role = %s"
+        params.append(role)
+
+    cursor.execute(query, params)
+    users = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template('admin/users.html',
+                           users=users,
+                           search=search,
+                           selected_role=role)
+
+@app.route('/admin/delete_user/<int:user_id>')
+def delete_user(user_id):
+    if 'user_id' not in session or session['role'] != 'admin':
+        return redirect('/')
+
+    conn = get_db_connection()
+
+    conn.execute("DELETE FROM users WHERE user_id = ?", (user_id,))
+    conn.commit()
+    conn.close()
+
+    if user_id == session['user_id']:
+        return redirect('/admin/users')
+
+    return redirect('/admin/users')
+
+@app.route('/admin/courses')
+def admin_courses():
+    if 'user_id' not in session or session['role'] != 'admin':
+        return redirect('/')
+
+    search = request.args.get('search', '')
+    teacher = request.args.get('teacher', '')
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    query = """
+        SELECT 
+            c.id,
+            c.course_name,
+            c.course_code,
+            c.teacher_email,
+            COALESCE(t.name, 'No Teacher') AS teacher_name
+        FROM courses c
+        LEFT JOIN teacher t ON c.teacher_email = t.email
+        WHERE 1=1
+    """
+
+    params = []
+
+    if search:
+        query += " AND (c.course_name LIKE %s OR c.course_code LIKE %s)"
+        search_term = f"%{search}%"
+        params.extend([search_term, search_term])
+
+    if teacher:
+        query += " AND c.teacher_email = %s"
+        params.append(teacher)
+
+    cursor.execute(query, params)
+    courses = cursor.fetchall()
+
+    cursor.execute("SELECT email, name FROM teacher")
+    teachers = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template('admin/courses.html',
+                           courses=courses,
+                           teachers=teachers,
+                           search=search,
+                           selected_teacher=teacher)
+
+@app.route('/admin/delete_course/<int:course_id>')
+def a_delete_course(course_id):
+    if 'user_id' not in session or session['role'] != 'admin':
+        return redirect('/')
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM courses WHERE course_id = %s", (course_id,))
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return redirect('/admin/courses')
+
+@app.route('/admin/announcements', methods=['GET', 'POST'])
+def admin_announcements():
+    if 'user_id' not in session or session['role'] != 'admin':
+        return redirect('/')
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    if request.method == 'POST':
+        title = request.form['title']
+        message = request.form['message']
+
+        cursor.execute("""
+            INSERT INTO announcements (title, content)
+            VALUES (%s, %s)
+        """, (title, message))
+
+        conn.commit()
+
+    cursor.execute("SELECT * FROM announcements ORDER BY id DESC")
+    announcements = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template('admin/announcements.html',
+                           announcements=announcements)
 
 
 if __name__ == "__main__":

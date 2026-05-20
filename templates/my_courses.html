@@ -7,160 +7,224 @@
 <style>
 
 /* ===== GLOBAL ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-/* ===== BACKGROUND ===== */
-body {
-    min-height: 100vh;
+    /* ===== BACKGROUND ===== */
+    body {
+        min-height: 100vh;
 
-    background:
-        linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
-        url("/static/images/college.jpg");
+        background:
+            linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+            url("/static/images/college.jpg");
 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
 
-    color: white;
-}
+        color: white;
+    }
 
-/* ===== NAVBAR ===== */
-.navbar {
-    background: rgba(0,0,0,0.3);
-    backdrop-filter: blur(8px);
-    padding: 15px 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    /* ===== NAVBAR ===== */
+    .navbar {
+        background: rgba(0,0,0,0.3);
+        backdrop-filter: blur(8px);
+        padding: 15px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-.nav-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+    .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-.logo {
-    width: 35px;
-    height: 35px;
-}
+    .logo {
+        width: 35px;
+        height: 35px;
+    }
 
-.nav-title {
-    font-size: 18px;
-    font-weight: 600;
-}
+    .nav-title {
+        font-size: 18px;
+        font-weight: 600;
+    }
 
-.logout-btn {
-    background: white;
-    color: #0f766e;
-    padding: 6px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-}
+    .logout-btn {
+        background: white;
+        color: #0f766e;
+        padding: 6px 14px;
+        border-radius: 8px;
+        text-decoration: none;
+    }
 
-.logout-btn:hover {
-    background: #e6e6e6;
-}
+    .logout-btn:hover {
+        background: #e6e6e6;
+    }
 
-/* ===== TITLE ===== */
-h2 {
-    text-align: center;
-    margin: 20px 0;
-}
+    /* ===== TITLE ===== */
+    h2 {
+        text-align: center;
+        margin: 20px 0;
+    }
 
-/* ===== CONTAINER ===== */
-.container {
-    max-width: 1000px;
-    margin: auto;
+    /* ===== CONTAINER ===== */
+    .container {
+        max-width: 1000px;
+        margin: auto;
 
-    background: rgba(255,255,255,0.95);
-    color: black;
-    padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-}
+        background: rgba(255, 255, 255, 0);
+        color: black;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
 
-/* ===== TABLE ===== */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+    /* ===== TABLE ===== */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-th {
-    background: #0f766e;
-    color: white;
-    padding: 12px;
-}
+    th {
+        background: #0f766e;
+        color: white;
+        padding: 12px;
+    }
 
-td {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-    text-align: center;
-}
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+    }
 
-tr:hover {
-    background: #f1f5f9;
-}
+    tr:hover {
+        background: #f1f5f9;
+    }
 
-/* ===== BUTTONS ===== */
-.btn {
-    padding: 6px 12px;
-    border-radius: 6px;
-    text-decoration: none;
-    color: white;
-    font-size: 13px;
-    display: inline-block;
-}
+    /* ===== BUTTONS ===== */
+    .btn {
+        padding: 6px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        color: white;
+        font-size: 13px;
+        display: inline-block;
+    }
 
-/* DIFFERENT BUTTON COLORS */
-.open-btn {
-    background: #0f766e;
-}
+    /* DIFFERENT BUTTON COLORS */
+    .open-btn {
+        background: #0f766e;
+    }
 
-.announce-btn {
-    background: #f59e0b;
-}
+    .announce-btn {
+        background: #f59e0b;
+    }
 
-.discuss-btn {
-    background: #10b981;
-}
+    .discuss-btn {
+        background: #10b981;
+    }
 
-.btn:hover {
-    opacity: 0.85;
-}
+    .btn:hover {
+        opacity: 0.85;
+    }
 
-/* ===== EMPTY ===== */
-.no-courses {
-    text-align: center;
-    padding: 2rem;
-    color: gray;
-}
+    /* ===== EMPTY ===== */
+    .no-courses {
+        text-align: center;
+        padding: 2rem;
+        color: gray;
+    }
 
-/* ===== BOTTOM LINKS ===== */
-.bottom-links {
-    margin-top: 20px;
-    text-align: center;
-}
+    /* ===== BOTTOM LINKS ===== */
+    .bottom-links {
+        margin-top: 20px;
+        text-align: center;
+    }
 
-.link-btn {
-    display: inline-block;
-    margin: 10px;
-    padding: 10px 15px;
-    background: #0f766e;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 500;
-}
+    .link-btn {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px 15px;
+        background: #0f766e;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+    }
 
-.link-btn:hover {
-    background: #0ea5a4;
-}
+    .link-btn:hover {
+        background: #0ea5a4;
+    }
+
+    /* ===== CARD GRID ===== */
+    .course-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    /* ===== CARD ===== */
+    .course-card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+
+        transition: 0.3s;
+    }
+
+    .course-card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* ===== TITLE ===== */
+    .course-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #0f766e;
+        margin-bottom: 8px;
+    }
+
+    /* ===== INFO ===== */
+    .course-info {
+        font-size: 13px;
+        color: #555;
+        margin-bottom: 15px;
+    }
+
+    /* ===== BUTTON GROUP ===== */
+    .btn-group {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+        padding: 6px 12px;
+        border-radius: 20px;
+        text-decoration: none;
+        color: white;
+        font-size: 12px;
+        transition: 0.2s;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+        transform: scale(1.05);
+    }
+
+    /* COLORS */
+    .open-btn { background: #0f766e; }
+    .announce-btn { background: #f59e0b; }
+    .discuss-btn { background: #10b981; }
 
 </style>
 </head>
@@ -182,42 +246,34 @@ tr:hover {
 <div class="container">
 
 {% if courses %}
-<table>
-    <tr>
-        <th>Course</th>
-        <th>Code</th>
-        <th>Teacher</th>
-        <th>Open</th>
-        <th>Announcements</th>
-        <th>Discussions</th>
-    </tr>
+<div class="course-grid">
 
-    {% for c in courses %}
-    <tr>
-        <td>{{ c.course_name }}</td>
-        <td>{{ c.course_code }}</td>
-        <td>{{ c.teacher_email }}</td>
+{% for c in courses %}
+<div class="course-card">
 
-        <td>
-            <a href="/course/{{ c.id }}" class="btn open-btn">
-                Open
-            </a>
-        </td>
+    <div class="course-title">
+        {{ c.course_name }}
+    </div>
 
-        <td>
-            <a href="/view_announcements/{{ c.id }}" class="btn announce-btn">
-                View
-            </a>
-        </td>
+    <div class="course-info">
+        Code: {{ c.course_code }} <br>
+        Teacher: {{ c.teacher_email }}
+    </div>
 
-        <td>
-            <a href="/discussions/{{ c.id }}" class="btn discuss-btn">
-                Join
-            </a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+    <div class="btn-group">
+
+        <a href="/course/{{ c.id }}" class="btn open-btn">Open</a>
+
+        <a href="/view_announcements/{{ c.id }}" class="btn announce-btn">Announcements</a>
+
+        <a href="/discussions/{{ c.id }}" class="btn discuss-btn">Discussion</a>
+
+    </div>
+
+</div>
+{% endfor %}
+
+</div>
 
 {% else %}
 <div class="no-courses">

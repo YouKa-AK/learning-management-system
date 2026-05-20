@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+
+    /* ===== GLOBAL ===== */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* ===== BACKGROUND ===== */
+    body {
+        min-height: 100vh;
+
+        background:
+            linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+            url("/static/images/college.jpg");
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        color: white;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+        background: rgba(0,0,0,0.3);
+        backdrop-filter: blur(8px);
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .navbar h2 {
+        font-weight: 600;
+    }
+
+    .navbar a {
+        background: white;
+        color: #0f766e;
+        padding: 6px 14px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .navbar a:hover {
+        background: #e6e6e6;
+    }
+
+    /* ===== CONTAINER ===== */
+    .container {
+        padding: 40px;
+    }
+
+    /* ===== TITLE ===== */
+    .container h2 {
+        margin-bottom: 25px;
+    }
+
+    /* ===== CARD GRID ===== */
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+    }
+
+    /* ===== CARD ===== */
+    .card {
+        background: white;
+        color: black;
+        padding: 25px;
+        border-radius: 16px;
+        text-align: center;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+        transition: 0.3s;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card h2 {
+        margin: 10px 0;
+        font-size: 28px;
+        color: #0f766e;
+    }
+
+    .card p {
+        color: #555;
+    }
+
+    /* ===== ACTION SECTION ===== */
+    .actions {
+        margin-top: 40px;
+    }
+
+    /* ===== BUTTON ===== */
+    .btn {
+        display: inline-block;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #0f766e, #0ea5a4);
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        margin-right: 10px;
+        font-weight: 500;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+    }
+
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h2>Admin Panel</h2>
+        <div>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <h2>Dashboard Overview</h2>
+
+        <div class="cards">
+            <div class="card">
+                <p>Total Users</p>
+                <h2>{{ total_users }}</h2>
+            </div>
+
+            <div class="card">
+                <p>Students</p>
+                <h2>{{ total_students }}</h2>
+            </div>
+
+            <div class="card">
+                <p>Teachers</p>
+                <h2>{{ total_teachers }}</h2>
+            </div>
+
+            <div class="card">
+                <p>Courses</p>
+                <h2>{{ total_courses }}</h2>
+            </div>
+        </div>
+
+        <div class="actions">
+            <h3>Quick Actions</h3>
+
+            <a href="/admin/users" class="btn">Manage Users</a>
+            <a href="/admin/courses" class="btn">Manage Courses</a>
+            <!-- <a href="/admin/announcements" class="btn">Announcements</a> -->
+        </div>
+
+    </div>
+
+</body>
+</html>

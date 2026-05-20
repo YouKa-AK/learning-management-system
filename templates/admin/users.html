@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Users</title>
+
+<style>
+
+/* ===== GLOBAL ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ===== BACKGROUND ===== */
+body {
+    min-height: 100vh;
+
+    background:
+        linear-gradient(rgba(15,118,110,0.75), rgba(14,165,164,0.75)),
+        url("/static/images/college.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    color: white;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar h2 {
+    font-weight: 600;
+}
+
+.navbar a {
+    background: white;
+    color: #0f766e;
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.navbar a:hover {
+    background: #e6e6e6;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    padding: 30px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 14px;
+    background: #0f766e;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.back-btn:hover {
+    background: #0ea5a4;
+}
+
+/* ===== SEARCH BAR ===== */
+form {
+    margin-bottom: 25px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    background: rgba(255,255,255,0.95);
+    padding: 15px;
+    border-radius: 12px;
+    color: black;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+input, select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* ===== BUTTONS ===== */
+button {
+    padding: 10px 15px;
+    background: linear-gradient(to right, #0f766e, #1fa39a);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.reset-btn {
+    padding: 10px 15px;
+    background: #64748b;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+/* ===== TABLE BOX ===== */
+.table-box {
+    background: rgba(255,255,255,0.95);
+    color: black;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+/* ===== TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #0f766e;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    color: #000;
+}
+
+/* ===== FIXED HOVER ===== */
+tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* ===== DELETE BUTTON ===== */
+.btn-delete {
+    padding: 6px 12px;
+    background: #dc2626;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.btn-delete:hover {
+    background: #b91c1c;
+}
+
+/* ===== EMPTY ===== */
+.empty {
+    text-align: center;
+    padding: 20px;
+    color: gray;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>Admin - Users</h2>
+    <a href="/admin_dashboard">Dashboard</a>
+</div>
+
+<div class="container">
+
+    <!-- BACK BUTTON -->
+    <div class="top-bar">
+        <a href="/admin_dashboard" class="back-btn">← Back to Dashboard</a>
+    </div>
+
+    <!-- SEARCH -->
+    <form method="GET">
+
+        <input type="text" name="search"
+            placeholder="Search by name or email"
+            value="{{ search }}">
+
+        <select name="role">
+            <option value="">All Roles</option>
+            <option value="student" {% if selected_role=='student' %}selected{% endif %}>Student</option>
+            <option value="teacher" {% if selected_role=='teacher' %}selected{% endif %}>Teacher</option>
+        </select>
+
+        <button type="submit">Search</button>
+
+        <a href="/admin/users" class="reset-btn">Reset</a>
+
+    </form>
+
+    <h2>All Users</h2>
+
+    <!-- TABLE BOX -->
+    <div class="table-box">
+
+    {% if users %}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+                <!-- ✅ FIXED ID BUG -->
+                <a href="/admin/delete_user/{{ user.id }}"
+                   class="btn-delete"
+                   onclick="return confirm('Are you sure?')">
+                   Delete
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% else %}
+    <div class="empty">No users found.</div>
+    {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
